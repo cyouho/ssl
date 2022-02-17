@@ -4,10 +4,15 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Create user account table migrations.
+ * 生成用户账户表迁移文件
+ */
 class CreateUserAccountsTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations to create user account table.
+     * 生成用户账户表
      *
      * @return void
      */
@@ -21,7 +26,8 @@ class CreateUserAccountsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations to drop user account table.
+     * 删除用户账户表
      *
      * @return void
      */
