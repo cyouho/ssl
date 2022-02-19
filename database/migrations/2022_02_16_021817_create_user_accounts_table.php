@@ -20,9 +20,9 @@ class CreateUserAccountsTable extends Migration
     {
         Schema::create('user_accounts', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->id('user_id');
+            $table->id('user_id')->unique();
             $table->string('user_name');
-            $table->string('user_email');
+            $table->string('user_email')->unique();
             $table->string('user_password');
             $table->string('user_token');
             $table->timestamps();
