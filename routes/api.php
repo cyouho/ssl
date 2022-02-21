@@ -23,8 +23,10 @@ Route::get('/test', function () {
 Route::post('/register', [
     AuthController::class, 'register'
 ]);
-
-
+// Login | 登录
+Route::post('/login', [
+    AuthController::class, 'login'
+]);
 
 
 

@@ -24,7 +24,7 @@ class CreateUserAccountsTable extends Migration
             $table->string('user_name');
             $table->string('user_email')->unique();
             $table->string('user_password');
-            $table->string('user_token');
+            $table->string('user_session');
             $table->timestamps();
             $table->timestamp('last_login_at');
             $table->bigInteger('total_login_times');
