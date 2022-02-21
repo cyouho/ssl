@@ -13,6 +13,16 @@ use App\Http\Controllers\Utils as ControllerUtils; // Utils class for controller
  */
 class AuthController extends Controller
 {
+    private $_success_message_api = [];
+
+    private $_error_message_api = [];
+
+    public function __construct()
+    {
+        $this->_success_message_api = config('message.success_message.api');
+        $this->_error_message_api = config('message.error_message.api');
+    }
+
     /**
      * Register function
      * 用户注册
@@ -29,7 +39,7 @@ class AuthController extends Controller
         $userAccount = new UserAccount();
 
         $userName = ControllerUtils::getNameFromEmail($postData['email']);
-        $timestamp = time();
+        $timestamp = date("Y-m-d H:i:s"); // @todo 需要斟酌！！！
         $session = ControllerUtils::getSessionRandomMD5();
         $password = Hash::make($postData['password']);
         $data = [
@@ -37,14 +47,28 @@ class AuthController extends Controller
             'user_email'    => $postData['email'],
             'user_password' => $password,
             'user_session'  => $session,
-            'create_at'     => $timestamp,
-            'update_at'     => $timestamp,
+            'created_at'     => $timestamp,
+            'updated_at'     => $timestamp,
+            'last_login_at' => $timestamp,
             'total_login_times' => 1,
         ];
 
-        $userAccount->insertUserData($data);
+        $userId = $userAccount->insertUserData($data);
 
-        return response()->json($postData, 201);
+        if ($userId) {
+            $responseMessage = [
+                'message' => $this->_success_message_api[201],
+                'session' => $session,
+            ];
+            $statusCode = 201;
+        } else {
+            $responseMessage = [
+                'message' => $this->_error_message_api[404],
+            ];
+            $statusCode = 404;
+        }
+
+        return response()->json($responseMessage, $statusCode);
     }
 
     /**
