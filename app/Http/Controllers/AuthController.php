@@ -17,6 +17,11 @@ class AuthController extends Controller
 
     private $_error_message_api = [];
 
+    /**
+     * Init the auth controller.
+     * Get message for user authentication.
+     * 初始化api的message。
+     */
     public function __construct()
     {
         $this->_success_message_api = config('message.success_message.api');
@@ -28,6 +33,8 @@ class AuthController extends Controller
      * 用户注册
      * 
      * @param Request $request <form data | form数据>
+     * 
+     * @return json $responseMessage $statusCode
      */
     public function register(Request $request)
     {
@@ -53,6 +60,7 @@ class AuthController extends Controller
             'total_login_times' => 1,
         ];
 
+        // Insert user data into database. | 插入注册用户信息
         $userId = $userAccount->insertUserData($data);
 
         if ($userId) {
@@ -78,11 +86,31 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $postData = $request->validate([
-            'email' => 'required|email|unique:user_accounts,user_email',
+            'email' => 'required|email',
             'password' => 'required|min:8|max:16'
         ]);
 
         $userAccount = new UserAccount();
+        $userId = $userAccount->getUserId($postData['email']);
+        $userData = [
+            'user_email' => $postData['email'],
+        ];
+
+        if (!$userId) {
+            $message = [
+                'message' => $this->_error_message_api[40401],
+                'status_code' => 40401,
+            ];
+            return response()->json($message, 404);
+        } else if (!$userAccount->checkUserPassword($userData, $postData['password'])) {
+            $message = [
+                'message' => $this->_error_message_api[40402],
+                'status_code' => 40402,
+            ];
+            return response()->json($message, 404);
+        }
+
+        $loginTime = date('Y-m-d H:i:s');
     }
 
     /**
