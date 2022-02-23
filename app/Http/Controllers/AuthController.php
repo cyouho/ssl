@@ -111,6 +111,12 @@ class AuthController extends Controller
         }
 
         $loginTime = date('Y-m-d H:i:s');
+        $userAccount->updateLastLoginTime($loginTime, $postData['email']); // 更新最后登录时间
+        $userAccount->updateUserTotalLoginTimes($postData['email']); // 更新总登录次数
+
+        $userCookie = $userAccount->getUserCookie($postData['email']);
+
+        return response()->json($userCookie, 200);
     }
 
     /**

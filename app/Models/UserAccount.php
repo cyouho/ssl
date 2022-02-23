@@ -54,6 +54,46 @@ class UserAccount extends Model
     }
 
     /**
+     * Get user session data by unified function
+     * 使用统一方法获取用户session
+     * 
+     * @param string $email <User email | 用户email>
+     * 
+     * @return object
+     */
+    public function getUserCookie($email)
+    {
+        return $this->selectUserData($columnName = ['user_session'], $condition = [['user_email', '=', $email]]);
+    }
+
+    /**
+     * Update user total login times
+     * 更新用户总登录次数
+     * 
+     * @param string $email <User email | 用户email>
+     * 
+     * @return void
+     */
+    public function updateUserTotalLoginTimes($email)
+    {
+        $affected = DB::update('update user_accounts set total_login_times = total_login_times + 1 where user_email = ?', [$email]);
+    }
+
+    /**
+     * Update user last login time
+     * 更新用户最后登录时间
+     * 
+     * @param string $loginTime <User login time | 用户最后登录时间>
+     * @param string $email     <User email | 用户email>
+     * 
+     * @return void
+     */
+    public function updateLastLoginTime($loginTime, $email)
+    {
+        $affected = DB::update('update user_accounts set last_login_at = ? where user_email = ?', [$loginTime, $email]);
+    }
+
+    /**
      * Check user password
      * 检查用户密码
      * 
@@ -91,5 +131,15 @@ class UserAccount extends Model
             ->get();
 
         return isset($id[0]) ? $id : '';
+    }
+
+    private function selectUserData($columnName = ['*'], $condition = [])
+    {
+        $result = DB::table('user_accounts')
+            ->select($columnName)
+            ->where($condition)
+            ->get();
+
+        return $result;
     }
 }
