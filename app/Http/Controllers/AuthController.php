@@ -96,6 +96,7 @@ class AuthController extends Controller
             'user_email' => $postData['email'],
         ];
 
+        // if for user exist and else if for password correct.
         if (!$userId) {
             $message = [
                 'message' => $this->_error_message_api[40401],
@@ -113,6 +114,7 @@ class AuthController extends Controller
         $loginTime = date('Y-m-d H:i:s');
         $userAccount->updateLastLoginTime($loginTime, $postData['email']); // 更新最后登录时间
         $userAccount->updateUserTotalLoginTimes($postData['email']); // 更新总登录次数
+        $userAccount->updataUserSession($postData['email'], $timeData = ControllerUtils::getSessionRandomMD5()); // 更新用户session
 
         $userCookie = $userAccount->getUserCookie($postData['email']);
 
@@ -126,4 +128,11 @@ class AuthController extends Controller
     public function logout()
     {
     }
+
+    // 测试方法，暂时不要删!
+    // public function testtest()
+    // {
+    //     $test = new UserAccount();
+    //     return $test->updataUserSession($postData = 'sdf@sdf.com', $session = ControllerUtils::getSessionRandomMD5());
+    // }
 }
