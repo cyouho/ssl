@@ -94,6 +94,20 @@ class UserAccount extends Model
     }
 
     /**
+     * Updata user session
+     * 更新用户session
+     * 
+     * @param string $email   <User email | 用户email>
+     * @param string $session <User session | 用户session>
+     * 
+     * @return void
+     */
+    public function updataUserSession($email, $session)
+    {
+        $this->updateUserData($condition = [['user_email', $email]], $updataData = ['user_session' => $session]);
+    }
+
+    /**
      * Check user password
      * 检查用户密码
      * 
@@ -133,6 +147,15 @@ class UserAccount extends Model
         return isset($id[0]) ? $id : '';
     }
 
+    /**
+     * Select user data real function
+     * 检索用户信息真实方法
+     * 
+     * @param array $columnName <Select columnName | 检索的字段名>
+     * @param array $condition  <Where condition | 检索的where约束条件>
+     * 
+     * @return object
+     */
     private function selectUserData($columnName = ['*'], $condition = [])
     {
         $result = DB::table('user_accounts')
@@ -141,5 +164,21 @@ class UserAccount extends Model
             ->get();
 
         return $result;
+    }
+
+    /**
+     * Updata user data real function
+     * 更新用户信息真实方法
+     * 
+     * @param array $condition  <Where condition | 检索的where约束条件>
+     * @param array $updataData <Updata data | 需要更新的数据>
+     * 
+     * @return void
+     */
+    private function updateUserData($condition = [], $updataData = [])
+    {
+        $result = DB::table('user_accounts')
+            ->where($condition)
+            ->update($updataData);
     }
 }
