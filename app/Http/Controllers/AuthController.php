@@ -114,7 +114,8 @@ class AuthController extends Controller
         $loginTime = date('Y-m-d H:i:s');
         $userAccount->updateLastLoginTime($loginTime, $postData['email']); // 更新最后登录时间
         $userAccount->updateUserTotalLoginTimes($postData['email']); // 更新总登录次数
-        $userAccount->updataUserSession($postData['email'], $timeData = ControllerUtils::getSessionRandomMD5()); // 更新用户session
+        // 更新用户session
+        $userAccount->updataUserSession($postData['email'], $timeData = ControllerUtils::getSessionRandomMD5());
 
         $userCookie = $userAccount->getUserCookie($postData['email']);
 
@@ -125,8 +126,12 @@ class AuthController extends Controller
      * Logout function
      * 用户登出
      */
-    public function logout()
+    public function logout(Request $request)
     {
+        $postData = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:8|max:16',
+        ]);
     }
 
     // 测试方法，暂时不要删!

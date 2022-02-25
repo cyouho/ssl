@@ -26,6 +26,11 @@ Route::post('/login', [
     AuthController::class, 'login'
 ]);
 
+// Logout | 登出
+Route::post('/logout', [
+    AuthController::class, 'logout'
+]);
+
 
 
 
