@@ -10,6 +10,8 @@ return [
     'success_message' => [
         'api' => [
             201 => 'Create new user account successfully',
+            20001 => 'Create new user seesion successfully',
+            20002 => 'Delete user session successfully',
         ],
     ],
 ];

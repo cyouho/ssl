@@ -16,14 +16,10 @@ class UserAccount extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
-     * 数据库列白名单
+     * DB table name
+     * 数据库表名
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    const TABLE_NAME = 'user_accounts';
 
     /**
      * Insert user data
@@ -35,7 +31,7 @@ class UserAccount extends Model
      */
     public function insertUserData($data)
     {
-        $id = DB::table('user_accounts')->insertGetId($data);
+        $id = DB::table(self::TABLE_NAME)->insertGetId($data);
 
         return $id;
     }
@@ -119,7 +115,7 @@ class UserAccount extends Model
     public function checkUserPassword($userData, $password)
     {
         $key = key($userData);
-        $result = DB::table('user_accounts')
+        $result = DB::table(self::TABLE_NAME)
             ->select('user_password')
             ->where($key, '=', $userData[$key])
             ->get();
@@ -127,6 +123,11 @@ class UserAccount extends Model
         $hashPassword = $result[0]->user_password;
 
         return Hash::check($password, $hashPassword);
+    }
+
+    public function deleteUserSession($userData, $deleteData)
+    {
+        $this->updateUserData($condition = [['user_email', $userData]], $deleteData);
     }
 
     /**
@@ -139,7 +140,7 @@ class UserAccount extends Model
      */
     private function selectUserId($data)
     {
-        $id = DB::table('user_accounts')
+        $id = DB::table(self::TABLE_NAME)
             ->select('user_id')
             ->where('user_email', '=', $data)
             ->get();
@@ -158,7 +159,7 @@ class UserAccount extends Model
      */
     private function selectUserData($columnName = ['*'], $condition = [])
     {
-        $result = DB::table('user_accounts')
+        $result = DB::table(self::TABLE_NAME)
             ->select($columnName)
             ->where($condition)
             ->get();
@@ -177,8 +178,23 @@ class UserAccount extends Model
      */
     private function updateUserData($condition = [], $updataData = [])
     {
-        $result = DB::table('user_accounts')
+        $result = DB::table(self::TABLE_NAME)
             ->where($condition)
             ->update($updataData);
+    }
+
+    /**
+     * Delete user data real function
+     * 删除用户信息真实方法
+     * 
+     * @param array $condition <Where condition | 删除的where约束条件>
+     * 
+     * @return void
+     */
+    private function deleteUserData($condition = [])
+    {
+        $result = DB::table(self::TABLE_NAME)
+            ->where($condition)
+            ->delete();
     }
 }
