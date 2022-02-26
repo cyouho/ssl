@@ -100,13 +100,13 @@ class AuthController extends Controller
         if (!$userId) {
             $message = [
                 'message' => $this->_error_message_api[40401],
-                'status_code' => 40401,
+                'api_status_code' => 40401,
             ];
             return response()->json($message, 404);
         } else if (!$userAccount->checkUserPassword($userData, $postData['password'])) {
             $message = [
                 'message' => $this->_error_message_api[40402],
-                'status_code' => 40402,
+                'api_status_code' => 40402,
             ];
             return response()->json($message, 404);
         }
@@ -119,7 +119,13 @@ class AuthController extends Controller
 
         $userCookie = $userAccount->getUserCookie($postData['email']);
 
-        return response()->json($userCookie, 200);
+        $messages = [
+            'message' => $this->_success_message_api[20001],
+            'session' => $userCookie,
+            'api_status_code' => 20001,
+        ];
+
+        return response()->json($messages, 200);
     }
 
     /**
@@ -132,12 +138,23 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8|max:16',
         ]);
+
+        $userAccount = new UserAccount();
+
+        $userAccount->deleteUserSession($postData['email'], $deleteData = ['user_session' => NULL]);
+
+        $messages = [
+            'message' => $this->_success_message_api[20002],
+            'api_status_code' => 20002,
+        ];
+
+        return response()->json($messages, 200);
     }
 
-    // 测试方法，暂时不要删!
+    // // 测试方法，暂时不要删!
     // public function testtest()
     // {
     //     $test = new UserAccount();
-    //     return $test->updataUserSession($postData = 'sdf@sdf.com', $session = ControllerUtils::getSessionRandomMD5());
+    //     return $test->deleteUserSession($postData = 'sdf@sdf.com', $deleteData = ['user_session' => NULL]);
     // }
 }
