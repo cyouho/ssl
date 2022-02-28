@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // Add for password | 用于密码加密
 use App\Models\UserAccount; // DB opreate | 操作数据库用
 use App\Http\Controllers\Utils as ControllerUtils; // Utils class for controller | controller工具类
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Authenticate for users. 
@@ -76,6 +77,7 @@ class AuthController extends Controller
             $statusCode = 404;
         }
 
+        $request->session()->put($userId . '_session:', $session);
         return response()->json($responseMessage, $statusCode);
     }
 
@@ -150,10 +152,12 @@ class AuthController extends Controller
         return response()->json($messages, 200);
     }
 
-    // // 测试方法，暂时不要删!
-    // public function testtest()
-    // {
-    //     $test = new UserAccount();
-    //     return $test->deleteUserSession($postData = 'sdf@sdf.com', $deleteData = ['user_session' => NULL]);
-    // }
+    // 测试方法，暂时不要删!
+    public function testtest(Request $request)
+    {
+        // $test = new UserAccount();
+        // return $test->deleteUserSession($postData = 'sdf@sdf.com', $deleteData = ['user_session' => NULL]);
+
+        $request->session()->put('h', 'helloworld');
+    }
 }
