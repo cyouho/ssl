@@ -31,9 +31,9 @@ Route::post('/logout', [
     AuthController::class, 'logout'
 ]);
 
-
-
-
+Route::get('/a', function (Request $request) {
+    phpinfo();
+});
 
 
 
