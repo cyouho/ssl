@@ -158,6 +158,12 @@ class AuthController extends Controller
         // $test = new UserAccount();
         // return $test->deleteUserSession($postData = 'sdf@sdf.com', $deleteData = ['user_session' => NULL]);
 
-        $request->session()->put('h', 'helloworld');
+        //$request->session()->put(123 . '_session:', 456);
+        //session(['key' => 'value']);
+        Redis::set('name', 'Taylor');
+
+        // if ($request->session()->exists('key')) {
+        //     echo 'exist';
+        // }
     }
 }
