@@ -77,7 +77,9 @@ class AuthController extends Controller
             $statusCode = 404;
         }
 
-        $request->session()->put($userId . '_session:', $session);
+        // 将session放入redis中 设置生存时间为: 2592000秒 
+        $this->setSessionToRedis($userId, $session);
+
         return response()->json($responseMessage, $statusCode);
     }
 
@@ -116,10 +118,12 @@ class AuthController extends Controller
         $loginTime = date('Y-m-d H:i:s');
         $userAccount->updateLastLoginTime($loginTime, $postData['email']); // 更新最后登录时间
         $userAccount->updateUserTotalLoginTimes($postData['email']); // 更新总登录次数
+        $userCookie = ControllerUtils::getSessionRandomMD5();
         // 更新用户session
-        $userAccount->updataUserSession($postData['email'], $timeData = ControllerUtils::getSessionRandomMD5());
+        $userAccount->updataUserSession($postData['email'], $timeData = $userCookie);
 
-        $userCookie = $userAccount->getUserCookie($postData['email']);
+        // 将session放入redis中 设置生存时间为: 2592000秒
+        $this->setSessionToRedis($userId[0]->user_id, $userCookie);
 
         $messages = [
             'message' => $this->_success_message_api[20001],
@@ -144,6 +148,9 @@ class AuthController extends Controller
 
         $userAccount->deleteUserSession($postData['email'], $deleteData = ['user_session' => NULL]);
 
+        $userId = $userAccount->getUserId($postData['email']);
+        $this->deleteSessionFromRedis($userId[0]->user_id);
+
         $messages = [
             'message' => $this->_success_message_api[20002],
             'api_status_code' => 20002,
@@ -152,18 +159,41 @@ class AuthController extends Controller
         return response()->json($messages, 200);
     }
 
+    private function setSessionToRedis($userId, $session)
+    {
+        $redis = Redis::connection('session');
+        $redis->setex($userId . '_session', 60 * 60 * 24 * 30, $session);
+    }
+
+    private function deleteSessionFromRedis($userId)
+    {
+        $redis = Redis::connection('session');
+        if ($redis->exists($userId . '_session')) {
+            $redis->del($userId . '_session');
+        }
+    }
+
     // 测试方法，暂时不要删!
     public function testtest(Request $request)
     {
         // $test = new UserAccount();
         // return $test->deleteUserSession($postData = 'sdf@sdf.com', $deleteData = ['user_session' => NULL]);
 
-        //$request->session()->put(123 . '_session:', 456);
-        //session(['key' => 'value']);
-        Redis::set('name', 'Taylor');
+        //$request->session()->put('test_key', 'testValue');
 
-        // if ($request->session()->exists('key')) {
-        //     echo 'exist';
-        // }
+        $redis = Redis::connection('session');
+
+        if (!$redis->exists('test_key')) {
+            $redis->setex('test_key', 60 * 60 * 24 * 30, '4cfee2409b6a137892e7911894a367b8');
+        } else {
+            $redis->del('test_key');
+        }
+    }
+
+    public function gettest()
+    {
+        $redis = Redis::connection('session');
+        $value = $redis->get('test_key');
+        return response()->json($value, 200);
     }
 }
