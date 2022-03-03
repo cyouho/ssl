@@ -17,6 +17,7 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/test', [AuthController::class, 'testtest']);
 Route::get('/get', [AuthController::class, 'gettest']);
+Route::get('/set', [AuthController::class, 'settest']);
 
 // Register user account | 用户注册
 Route::post('/register', [
