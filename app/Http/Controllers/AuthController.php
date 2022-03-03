@@ -159,6 +159,15 @@ class AuthController extends Controller
         return response()->json($messages, 200);
     }
 
+    public function authenticate(Request $request)
+    {
+        $postData = $request->post('session');
+        $userSession = $postData['session'];
+
+        $redis = Redis::connection('sessions');
+        $redis->get($userSession);
+    }
+
     private function setSessionToRedis($userId, $session)
     {
         $redis = Redis::connection('session');
@@ -173,7 +182,7 @@ class AuthController extends Controller
         }
     }
 
-    // 测试方法，暂时不要删!
+    // 测试方法，暂时不要删!----------------------------------------------------------------------
     public function testtest(Request $request)
     {
         // $test = new UserAccount();
@@ -194,6 +203,16 @@ class AuthController extends Controller
     {
         $redis = Redis::connection('session');
         $value = $redis->get('test_key');
+        return response()->json($value, 200);
+    }
+
+    public function settest()
+    {
+        $redis = Redis::connection('session');
+        $redis->sadd('test_set_key', 1);
+        $redis->sadd('test_set_key', 'aaabbbccc');
+
+        $value = $redis->smembers('test_set_key');
         return response()->json($value, 200);
     }
 }
