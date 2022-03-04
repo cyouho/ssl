@@ -49,6 +49,12 @@ class UserAccount extends Model
         return $this->selectUserId($data);
     }
 
+    public function getUserName($data)
+    {
+        $result = $this->selectUserData($columnName = ['user_name'], $condition = [['user_email', '=', $data]]);
+        return isset($result[0]) ? $result[0]->user_name : '';
+    }
+
     /**
      * Get user session data by unified function
      * 使用统一方法获取用户session

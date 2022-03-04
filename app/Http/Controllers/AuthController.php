@@ -78,7 +78,7 @@ class AuthController extends Controller
         }
 
         // 将session放入redis中 设置生存时间为: 2592000秒 
-        $this->setSessionToRedis($userId, $session);
+        $this->setSessionToRedis($userId, $userName, $session);
 
         return response()->json($responseMessage, $statusCode);
     }
@@ -96,6 +96,7 @@ class AuthController extends Controller
 
         $userAccount = new UserAccount();
         $userId = $userAccount->getUserId($postData['email']);
+        $userName = $userAccount->getUserName($postData['email']);
         $userData = [
             'user_email' => $postData['email'],
         ];
@@ -123,7 +124,7 @@ class AuthController extends Controller
         $userAccount->updataUserSession($postData['email'], $timeData = $userCookie);
 
         // 将session放入redis中 设置生存时间为: 2592000秒
-        $this->setSessionToRedis($userId[0]->user_id, $userCookie);
+        $this->setSessionToRedis($userId[0]->user_id, $userName, $userCookie);
 
         $messages = [
             'message' => $this->_success_message_api[20001],
@@ -146,8 +147,6 @@ class AuthController extends Controller
 
         $userAccount = new UserAccount();
 
-        $userAccount->deleteUserSession($postData['email'], $deleteData = ['user_session' => NULL]);
-
         $userId = $userAccount->getUserId($postData['email']);
         $this->deleteSessionFromRedis($userId[0]->user_id);
 
@@ -168,10 +167,14 @@ class AuthController extends Controller
         $redis->get($userSession);
     }
 
-    private function setSessionToRedis($userId, $session)
+    private function setSessionToRedis($userId, $userName, $session)
     {
         $redis = Redis::connection('session');
-        $redis->setex($userId . '_session', 60 * 60 * 24 * 30, $session);
+        $userData = [
+            'user_id' => $userId,
+            'user_name' => $userName,
+        ];
+        $redis->setex($session, 60 * 60 * 24 * 30, json_encode($userData, true));
     }
 
     private function deleteSessionFromRedis($userId)
@@ -185,11 +188,6 @@ class AuthController extends Controller
     // 测试方法，暂时不要删!----------------------------------------------------------------------
     public function testtest(Request $request)
     {
-        // $test = new UserAccount();
-        // return $test->deleteUserSession($postData = 'sdf@sdf.com', $deleteData = ['user_session' => NULL]);
-
-        //$request->session()->put('test_key', 'testValue');
-
         $redis = Redis::connection('session');
 
         if (!$redis->exists('test_key')) {
