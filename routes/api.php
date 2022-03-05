@@ -15,6 +15,8 @@ use App\Http\Controllers\AuthController;
 |
 */
 
+/* test Route */
+
 Route::get('/test', [AuthController::class, 'testtest']);
 Route::get('/get', [AuthController::class, 'gettest']);
 Route::get('/set', [AuthController::class, 'settest']);
@@ -33,9 +35,10 @@ Route::post('/logout', [
     AuthController::class, 'logout'
 ]);
 
-Route::get('/a', function (Request $request) {
-    phpinfo();
-});
+// authenticate | 登录状态确认
+Route::post('/authenticate', [
+    AuthController::class, 'authenticate'
+]);
 
 
 

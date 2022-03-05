@@ -19,6 +19,12 @@ class AuthController extends Controller
     private $_error_message_api = [];
 
     /**
+     * Time to Live of user session in redis: 2592000 s.
+     * redis中用户session生存时间 : 2592000 秒
+     */
+    const TTL = 60 * 60 * 24 * 30;
+
+    /**
      * Init the auth controller.
      * Get message for user authentication.
      * 初始化api的message。
@@ -158,15 +164,34 @@ class AuthController extends Controller
         return response()->json($messages, 200);
     }
 
+    /**
+     * Login status authentication
+     * 登录状态确认方法
+     * 
+     * @param Request $request <传递参数>
+     * 
+     * @return json $value <User data | 用户信息>
+     */
     public function authenticate(Request $request)
     {
-        $postData = $request->post('session');
-        $userSession = $postData['session'];
+        $userSession = $request->input('session');
 
-        $redis = Redis::connection('sessions');
-        $redis->get($userSession);
+        $redis = Redis::connection('session');
+        $value = json_decode($redis->get($userSession));
+
+        return response()->json($value, 200);
     }
 
+    /**
+     * Set user session to redis.
+     * 设置用户session到redis
+     * 
+     * @param int $userId <User Id | 用户Id>
+     * @param string $userName <User name | 用户名>
+     * @param string $session <User session | 用户session>
+     * 
+     * @return void
+     */
     private function setSessionToRedis($userId, $userName, $session)
     {
         $redis = Redis::connection('session');
@@ -174,43 +199,22 @@ class AuthController extends Controller
             'user_id' => $userId,
             'user_name' => $userName,
         ];
-        $redis->setex($session, 60 * 60 * 24 * 30, json_encode($userData, true));
+        $redis->setex($session, self::TTL, json_encode($userData, true));
     }
 
+    /**
+     * Delete user session from redis.
+     * 从redis里删除用户session
+     * 
+     * @param string $userId <User Id | 用户Id>
+     * 
+     * @return void
+     */
     private function deleteSessionFromRedis($userId)
     {
         $redis = Redis::connection('session');
         if ($redis->exists($userId . '_session')) {
             $redis->del($userId . '_session');
         }
-    }
-
-    // 测试方法，暂时不要删!----------------------------------------------------------------------
-    public function testtest(Request $request)
-    {
-        $redis = Redis::connection('session');
-
-        if (!$redis->exists('test_key')) {
-            $redis->setex('test_key', 60 * 60 * 24 * 30, '4cfee2409b6a137892e7911894a367b8');
-        } else {
-            $redis->del('test_key');
-        }
-    }
-
-    public function gettest()
-    {
-        $redis = Redis::connection('session');
-        $value = $redis->get('test_key');
-        return response()->json($value, 200);
-    }
-
-    public function settest()
-    {
-        $redis = Redis::connection('session');
-        $redis->sadd('test_set_key', 1);
-        $redis->sadd('test_set_key', 'aaabbbccc');
-
-        $value = $redis->smembers('test_set_key');
-        return response()->json($value, 200);
     }
 }
