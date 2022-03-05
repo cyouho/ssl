@@ -21,8 +21,9 @@ class CreateUserServersTable extends Migration
         Schema::create('user_servers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('server_id');
-            $table->string('server_name');
             $table->bigInteger('user_id');
+            $table->string('server_name');
+            $table->string('server_status');
             $table->timestamps();
         });
     }
