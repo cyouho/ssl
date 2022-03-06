@@ -4,7 +4,8 @@ return [
         'api' => [
             404 => 'Not found',
             40401 => 'User id not found',
-            40402 => 'User password incorrect'
+            40402 => 'User password incorrect',
+            40403 => 'User session delete failed',
         ],
     ],
     'success_message' => [

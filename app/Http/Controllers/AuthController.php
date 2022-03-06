@@ -149,19 +149,24 @@ class AuthController extends Controller
     {
         $postData = $request->validate([
             'email' => 'required|email',
+            'session' => 'required',
         ]);
 
-        $userAccount = new UserAccount();
+        $result = $this->deleteSessionFromRedis($postData['session']);
 
-        $userId = $userAccount->getUserId($postData['email']);
-        $this->deleteSessionFromRedis($userId[0]->user_id);
-
-        $messages = [
-            'message' => $this->_success_message_api[20002],
-            'api_status_code' => 20002,
-        ];
-
-        return response()->json($messages, 200);
+        if ($result === 2) {
+            $messages = [
+                'message' => $this->_success_message_api[20002],
+                'api_status_code' => 20002,
+            ];
+            return response()->json($messages, 200);
+        } else {
+            $messages = [
+                'message' => $this->_error_message_api[40403],
+                'api_status_code' => 40403,
+            ];
+            return response()->json($messages, 400);
+        }
     }
 
     /**
@@ -177,7 +182,7 @@ class AuthController extends Controller
         $userSession = $request->input('session');
 
         $redis = Redis::connection('session');
-        $value = json_decode($redis->get($userSession));
+        $value = $redis->hgetall($userSession);
 
         return response()->json($value, 200);
     }
@@ -195,11 +200,13 @@ class AuthController extends Controller
     private function setSessionToRedis($userId, $userName, $session)
     {
         $redis = Redis::connection('session');
-        $userData = [
+
+        $redis->hmset($session, [
             'user_id' => $userId,
             'user_name' => $userName,
-        ];
-        $redis->setex($session, self::TTL, json_encode($userData, true));
+        ]);
+
+        $redis->expire($session, self::TTL);
     }
 
     /**
@@ -208,13 +215,12 @@ class AuthController extends Controller
      * 
      * @param string $userId <User Id | 用户Id>
      * 
-     * @return void
+     * @return int $result <Deleted key numbers (default 2) | 被删除的key数量 (默认为 2)>
      */
-    private function deleteSessionFromRedis($userId)
+    private function deleteSessionFromRedis($userSession)
     {
         $redis = Redis::connection('session');
-        if ($redis->exists($userId . '_session')) {
-            $redis->del($userId . '_session');
-        }
+
+        return $redis->hexists($userSession, 'user_id') ? $redis->hdel($userSession, 'user_id', 'user_name') : false;
     }
 }
