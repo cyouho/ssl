@@ -41,7 +41,7 @@ class AuthController extends Controller
      * 
      * @param Request $request <form data | form数据>
      * 
-     * @return json $responseMessage $statusCode
+     * @return json $responseMessage $httpStatus
      */
     public function register(Request $request)
     {
@@ -75,18 +75,18 @@ class AuthController extends Controller
                 'message' => $this->_success_message_api[201],
                 'session' => $session,
             ];
-            $statusCode = 201;
+            $httpStatus = 201;
         } else {
             $responseMessage = [
                 'message' => $this->_error_message_api[404],
             ];
-            $statusCode = 404;
+            $httpStatus = 404;
         }
 
         // 将session放入redis中 设置生存时间为: 2592000秒 
         $this->setSessionToRedis($userId, $userName, $session);
 
-        return response()->json($responseMessage, $statusCode);
+        return response()->json($responseMessage, $httpStatus);
     }
 
     /**
@@ -123,11 +123,10 @@ class AuthController extends Controller
         }
 
         $loginTime = date('Y-m-d H:i:s');
-        $userAccount->updateLastLoginTime($loginTime, $postData['email']); // 更新最后登录时间
-        $userAccount->updateUserTotalLoginTimes($postData['email']); // 更新总登录次数
         $userCookie = ControllerUtils::getSessionRandomMD5();
-        // 更新用户session
-        $userAccount->updataUserSession($postData['email'], $timeData = $userCookie);
+
+        // 更新用户session，更新用户最后登录时间，更新用户总登录次数
+        $userAccount->updateUserTest($loginTime, $postData['email'], $userCookie);
 
         // 将session放入redis中 设置生存时间为: 2592000秒
         $this->setSessionToRedis($userId[0]->user_id, $userName, $userCookie);
@@ -159,14 +158,15 @@ class AuthController extends Controller
                 'message' => $this->_success_message_api[20002],
                 'api_status_code' => 20002,
             ];
-            return response()->json($messages, 200);
+            $httpStatus = 200;
         } else {
             $messages = [
                 'message' => $this->_error_message_api[40403],
                 'api_status_code' => 40403,
             ];
-            return response()->json($messages, 400);
+            $httpStatus = 400;
         }
+        return response()->json($messages, $httpStatus);
     }
 
     /**
