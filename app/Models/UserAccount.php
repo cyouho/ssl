@@ -68,45 +68,9 @@ class UserAccount extends Model
         return $this->selectUserData($columnName = ['user_session'], $condition = [['user_email', '=', $email]]);
     }
 
-    /**
-     * Update user total login times
-     * 更新用户总登录次数
-     * 
-     * @param string $email <User email | 用户email>
-     * 
-     * @return void
-     */
-    public function updateUserTotalLoginTimes($email)
+    public function updateUserTest($loginTime, $userEmail, $session)
     {
-        $affected = DB::update('update user_accounts set total_login_times = total_login_times + 1 where user_email = ?', [$email]);
-    }
-
-    /**
-     * Update user last login time
-     * 更新用户最后登录时间
-     * 
-     * @param string $loginTime <User login time | 用户最后登录时间>
-     * @param string $email     <User email | 用户email>
-     * 
-     * @return void
-     */
-    public function updateLastLoginTime($loginTime, $email)
-    {
-        $affected = DB::update('update user_accounts set last_login_at = ? where user_email = ?', [$loginTime, $email]);
-    }
-
-    /**
-     * Updata user session
-     * 更新用户session
-     * 
-     * @param string $email   <User email | 用户email>
-     * @param string $session <User session | 用户session>
-     * 
-     * @return void
-     */
-    public function updataUserSession($email, $session)
-    {
-        $this->updateUserData($condition = [['user_email', $email]], $updataData = ['user_session' => $session]);
+        $this->updateUserData($condition = [['user_email', $userEmail]], $updataData = ['last_login_at' => $loginTime, 'user_session' => $session, 'total_login_times' => DB::raw('total_login_times + 1')]);
     }
 
     /**
