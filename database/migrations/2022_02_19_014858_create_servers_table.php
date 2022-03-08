@@ -19,7 +19,8 @@ class CreateServersTable extends Migration
     public function up()
     {
         Schema::create('servers', function (Blueprint $table) {
-            $table->id('server_id');
+            $table->id('id');
+            $table->bigInteger('server_id');
             $table->string('server_name');
         });
     }

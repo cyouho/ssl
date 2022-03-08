@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class UserServers extends Model
 {
     use HasFactory;
+
+    public function selectUserData()
+    {
+    }
 }
