@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,23 +23,19 @@ Route::get('/get', [AuthController::class, 'gettest']);
 Route::get('/set', [AuthController::class, 'settest']);
 
 // Register user account | 用户注册
-Route::post('/register', [
-    AuthController::class, 'register'
-]);
+Route::post('/register', [AuthController::class, 'register']);
 // Login | 登录
-Route::post('/login', [
-    AuthController::class, 'login'
-]);
-
+Route::post('/login', [AuthController::class, 'login']);
 // Logout | 登出
-Route::post('/logout', [
-    AuthController::class, 'logout'
-]);
-
+Route::post('/logout', [AuthController::class, 'logout']);
 // authenticate | 登录状态确认
-Route::post('/authenticate', [
-    AuthController::class, 'authenticate'
-]);
+Route::post('/authenticate', [AuthController::class, 'authenticate']);
+// version 1 get user servers | v1 版本获取用户注册服务信息
+Route::get('/v1/user/servers/{userId}', [UserController::class, 'getUserServers'])
+    ->where('userId', 'required')
+    ->whereNumber('userId');
+// version 1 set user servers | v1 版本设置用户注册服务信息
+Route::post('/v1/user/servers', [UserController::class, 'setUserServers']);
 
 
 
