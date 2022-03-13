@@ -80,7 +80,7 @@ class AuthController extends Controller
             $responseMessage = [
                 'message' => $this->_error_message_api[404],
             ];
-            $httpStatus = 404;
+            $httpStatus = 400;
         }
 
         // 将session放入redis中 设置生存时间为: 2592000秒 
@@ -113,13 +113,13 @@ class AuthController extends Controller
                 'message' => $this->_error_message_api[40401],
                 'api_status_code' => 40401,
             ];
-            return response()->json($message, 404);
+            return response()->json($message, 400);
         } else if (!$userAccount->checkUserPassword($userData, $postData['password'])) {
             $message = [
                 'message' => $this->_error_message_api[40402],
                 'api_status_code' => 40402,
             ];
-            return response()->json($message, 404);
+            return response()->json($message, 400);
         }
 
         $loginTime = date('Y-m-d H:i:s');
