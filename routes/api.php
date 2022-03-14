@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ServersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,22 @@ use App\Http\Controllers\UserController;
 |
 */
 
-/* test Route */
+// All api url return to json.
+Route::get('/v1', function () {
+    $URLs = config('apiurls.api_urls');
+    return response()->json($URLs, 200);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Auth Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
 
 Route::get('/test', [AuthController::class, 'testtest']);
 Route::get('/get', [AuthController::class, 'gettest']);
@@ -30,6 +46,18 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 // authenticate | 登录状态确认
 Route::post('/authenticate', [AuthController::class, 'authenticate']);
+
+/*
+|--------------------------------------------------------------------------
+| User Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
 // version 1 get user servers | v1 版本获取用户注册服务信息
 Route::get('/v1/user/servers/{userId}', [UserController::class, 'getUserServers'])->whereNumber('userId');
 // version 1 set user servers | v1 版本设置用户注册服务信息
@@ -37,11 +65,19 @@ Route::post('/v1/user/servers', [UserController::class, 'setUserServers']);
 // version 1 update user servers status | v1 版本更改用户注册服务状态
 Route::put('/v1/user/servers/status/{userId}', [UserController::class, 'changeUserServerStatus'])->whereNumber('userId');
 
-Route::get('/v1', function () {
-    $URLs = config('apiurls.api_urls');
-    return response()->json($URLs, 200);
-});
+/*
+|--------------------------------------------------------------------------
+| Servers Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
 
+// version 1 get all user servers which sign in in db. | v1 版本获取所有用户可以注册的服务
+Route::get('/v1/servers/', [ServersController::class, 'getAllServers']);
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
