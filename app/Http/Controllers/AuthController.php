@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Hash; // Add for password | 用于密码加密
 use App\Models\UserAccount; // DB opreate | 操作数据库用
 use App\Http\Controllers\Utils as ControllerUtils; // Utils class for controller | controller工具类
 use Illuminate\Support\Facades\Redis;
+use App\Models\UserLoginRecord;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Authenticate for users. 
@@ -51,6 +53,7 @@ class AuthController extends Controller
         ]);
 
         $userAccount = new UserAccount();
+        $userLoginRecord = new UserLoginRecord();
 
         $userName = ControllerUtils::getNameFromEmail($postData['email']);
         $timestamp = date("Y-m-d H:i:s"); // @todo 需要斟酌！！！
@@ -86,6 +89,14 @@ class AuthController extends Controller
         // 将session放入redis中 设置生存时间为: 2592000秒 
         $this->setSessionToRedis($userId, $userName, $session);
 
+        $userLoginRecordData = [
+            'user_id' => $userId,
+            'login_at' => date('Y-m-d'),
+            'login_times' => 1,
+        ];
+
+        $loginRecordId = $userLoginRecord->setUserLoginRecord($userLoginRecordData);
+
         return response()->json($responseMessage, $httpStatus);
     }
 
@@ -101,6 +112,7 @@ class AuthController extends Controller
         ]);
 
         $userAccount = new UserAccount();
+        $userLoginRecord = new UserLoginRecord();
         $userId = $userAccount->getUserId($postData['email']);
         $userName = $userAccount->getUserName($postData['email']);
         $userData = [
@@ -136,6 +148,23 @@ class AuthController extends Controller
             'session' => $userCookie,
             'api_status_code' => 20001,
         ];
+
+        $loginRecordDate = date('Y-m-d');
+        $userLoginDataColumnName = [
+            'user_id' => $userId[0]->user_id,
+            'login_at' => $loginRecordDate,
+        ];
+
+        $userLoginDataCondition = [
+            'login_at' => $loginRecordDate,
+            'login_times' => DB::raw('login_times + 1'),
+        ];
+
+        // 更新admin每天登录次数
+        $userLoginRecord->setUserLoginRecord(
+            $userLoginDataColumnName,
+            $userLoginDataCondition
+        );
 
         return response()->json($messages, 200);
     }
