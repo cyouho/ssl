@@ -26,7 +26,7 @@ class UserServers extends Model
     {
         $result = $this->selectUserData($columnName, $condition);
 
-        return isset($result);
+        return isset($result[0]);
     }
 
     public function setUserServersStatus(
