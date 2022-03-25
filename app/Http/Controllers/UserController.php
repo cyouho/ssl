@@ -30,7 +30,7 @@ class UserController extends Controller
         $userServer = new UserServers();
 
         $result = $userServer->getUserServers(
-            $columnName = ['server_id'],
+            $columnName = ['*'],
             $condition = [['user_id', $userId]]
         );
 

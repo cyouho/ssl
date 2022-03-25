@@ -58,11 +58,11 @@ Route::post('/authenticate', [AuthController::class, 'authenticate']);
 |
 */
 
-// version 1 get user servers | v1 版本获取用户注册服务信息
+// version 1 get user servers | v1版本 获取用户注册服务信息
 Route::get('/v1/user/servers/{userId}', [UserController::class, 'getUserServers'])->whereNumber('userId');
-// version 1 set user servers | v1 版本设置用户注册服务信息
+// version 1 set user servers | v1版本 设置用户注册服务信息
 Route::post('/v1/user/servers', [UserController::class, 'setUserServers']);
-// version 1 update user servers status | v1 版本更改用户注册服务状态
+// version 1 update user servers status | v1版本 更改用户注册服务状态
 Route::put('/v1/user/servers/status/{userId}', [UserController::class, 'changeUserServerStatus'])->whereNumber('userId');
 
 /*
