@@ -26,6 +26,19 @@ return [
     */
 
     'server_name' => [
-        1 => 'Warehouse Management Server', // 仓储管理服务
+        1 => 'Warehouse Management Server', // 家用货架管理服务
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Servers Name by Chinese.
+    |--------------------------------------------------------------------------
+    |
+    | All the servers which user used should be writed by here for Chinese.
+    |
+    */
+
+    'server_name_cn' => [
+        'Warehouse Management Server' => '家用货架管理服务',
     ],
 ];
