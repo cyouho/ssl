@@ -12,7 +12,7 @@ class UserServers extends Model
 
     const TABLE_NAME = 'user_servers';
 
-    public function getUserServers(array $columnName, array $codition)
+    public function getUserServers(array $columnName, array $codition): array
     {
         return $this->selectUserData($columnName, $codition);
     }
@@ -22,7 +22,7 @@ class UserServers extends Model
         return $this->createUserData($insertData);
     }
 
-    public function ifExistServerForTheUser(array $columnName = ['*'], array $condition = [])
+    public function ifExistServerForTheUser(array $columnName = ['*'], array $condition = []): bool
     {
         $result = $this->selectUserData($columnName, $condition);
 
@@ -36,7 +36,7 @@ class UserServers extends Model
         return $this->updateUserData($condition, $updateData);
     }
 
-    private function selectUserData(array $columnName = ['*'], array $condition = [])
+    private function selectUserData(array $columnName = ['*'], array $condition = []): array
     {
         $result = DB::table(self::TABLE_NAME)
             ->select($columnName)
