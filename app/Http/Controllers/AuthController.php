@@ -95,6 +95,7 @@ class AuthController extends Controller
             'login_times' => 1,
         ];
 
+        // 记录用户第一次登录记录
         $loginRecordId = $userLoginRecord->setUserLoginRecord($userLoginRecordData);
 
         return response()->json($responseMessage, $httpStatus);
@@ -160,7 +161,7 @@ class AuthController extends Controller
             'login_times' => DB::raw('login_times + 1'),
         ];
 
-        // 更新admin每天登录次数
+        // 更新用户每天登录次数
         $userLoginRecord->setUserLoginRecord(
             $userLoginDataColumnName,
             $userLoginDataCondition
