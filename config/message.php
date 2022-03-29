@@ -17,6 +17,7 @@ return [
             20002 => 'Delete user session successfully',
             20003 => 'Insert user server successfully',
             20004 => 'Update user server status successfully',
+            20005 => 'Update user name successfully',
         ],
     ],
 ];
