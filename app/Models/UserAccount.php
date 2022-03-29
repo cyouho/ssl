@@ -73,6 +73,11 @@ class UserAccount extends Model
         $this->updateUserData($condition = [['user_email', $userEmail]], $updataData = ['last_login_at' => $loginTime, 'user_session' => $session, 'total_login_times' => DB::raw('total_login_times + 1')]);
     }
 
+    public function changeUserName(array $condition = [], array $updateData = [])
+    {
+        return $this->updateUserData($condition, $updateData);
+    }
+
     /**
      * Check user password
      * 检查用户密码

@@ -64,6 +64,8 @@ Route::get('/v1/user/servers/{userId}', [UserController::class, 'getUserServers'
 Route::post('/v1/user/servers', [UserController::class, 'setUserServers']);
 // version 1 update user servers status | v1版本 更改用户注册服务状态
 Route::put('/v1/user/servers/status/{userId}', [UserController::class, 'changeUserServerStatus'])->whereNumber('userId');
+// version 1 update user name | v1版本 更改用户名
+Route::put('/v1/user/{userId}', [UserController::class, 'changeUserName']);
 
 /*
 |--------------------------------------------------------------------------

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\UserAccount;
 use App\Models\UserServers;
 use Illuminate\Support\Facades\DB;
 
@@ -112,5 +112,29 @@ class UserController extends Controller
         }
 
         return response()->json($message, $httpStatus);
+    }
+
+    public function changeUserName(Request $request, int $userId)
+    {
+        $postData = $request->validate([
+            'user_name' => 'required',
+        ]);
+
+        $user = new UserAccount();
+        $user->changeUserName(
+            $condition = [['user_id', $userId]],
+            $updateData = [
+                'user_name' => $postData['user_name'],
+                'updated_at' => date('Y-m-d H:i:s'),
+            ],
+        );
+
+        $messages = [
+            'message' => $this->_server_success_messages[20005],
+            'api_status_code' => 20005,
+        ];
+        $httpStatus = 201;
+
+        return response()->json($messages, $httpStatus);
     }
 }
