@@ -177,7 +177,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $postData = $request->validate([
-            'email' => 'required|email',
             'session' => 'required',
         ]);
 
