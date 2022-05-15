@@ -49,10 +49,23 @@ class UserAccount extends Model
         return $this->selectUserId($data);
     }
 
+    /**
+     * Get user name
+     * 获取用户名
+     * 
+     * @param string $data <User data | 用户数据> value: user_email
+     * 
+     * @return mix
+     */
     public function getUserName($data)
     {
         $result = $this->selectUserData($columnName = ['user_name'], $condition = [['user_email', '=', $data]]);
         return isset($result[0]) ? $result[0]->user_name : '';
+    }
+
+    public function getUserDataForProfile(array $columnName = ['*'], array $conditions = [])
+    {
+        return $this->selectUserData($columnName, $conditions);
     }
 
     /**

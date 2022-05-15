@@ -37,6 +37,20 @@ class UserController extends Controller
         return response()->json($result, 200);
     }
 
+    public function getUserData(Request $request, int $userId)
+    {
+        $userData = new UserAccount();
+
+        $result = $userData->getUserDataForProfile(
+            $columnName = ['*'],
+            $conditions = [
+                ['user_id', $userId],
+            ]
+        );
+
+        return response()->json($result, 200);
+    }
+
     public function setUserServers(Request $request)
     {
         $postData = $request->validate([
