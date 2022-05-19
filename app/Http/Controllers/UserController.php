@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\UserAccount;
 use App\Models\UserServers;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -132,6 +133,7 @@ class UserController extends Controller
     {
         $postData = $request->validate([
             'user_name' => 'required',
+            'user_session' => 'required',
         ]);
 
         $user = new UserAccount();
@@ -143,6 +145,10 @@ class UserController extends Controller
             ],
         );
 
+        $userSession = $postData['user_session'];
+        // 修改Redis中的用户名
+        $this->changeUserNameFromRedis($userSession, $postData['user_name']);
+
         $messages = [
             'message' => $this->_server_success_messages[20005],
             'api_status_code' => 20005,
@@ -150,5 +156,14 @@ class UserController extends Controller
         $httpStatus = 201;
 
         return response()->json($messages, $httpStatus);
+    }
+
+    private function changeUserNameFromRedis($userSession, $userName)
+    {
+        $redis = Redis::connection('session');
+
+        $redis->hmset($userSession, [
+            'user_name' => $userName,
+        ]);
     }
 }
