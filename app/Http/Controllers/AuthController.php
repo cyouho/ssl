@@ -135,6 +135,12 @@ class AuthController extends Controller
             return response()->json($message, 400);
         }
 
+        $oldSession = $userAccount->getUserCookie($postData['email']);
+        // 如果Redis中存在旧session，就删除。
+        if ($oldSession[0]->user_session) {
+            $this->deleteSessionFromRedis($oldSession[0]->user_session);
+        }
+
         $loginTime = date('Y-m-d H:i:s');
         $userCookie = ControllerUtils::getSessionRandomMD5();
 
