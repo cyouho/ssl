@@ -26,6 +26,15 @@ class UserController extends Controller
         $this->_server_success_messages = config('message.success_message.api');
     }
 
+    /**
+     * Get User Servers.
+     * 获取用户已注册的服务
+     * 
+     * @param Request $request <IO datas | 输入数据>
+     * @param int $userId <user id | 用户Id>
+     * 
+     * @return response
+     */
     public function getUserServers(Request $request, int $userId)
     {
         $userServer = new UserServers();
