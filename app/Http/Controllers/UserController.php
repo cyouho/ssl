@@ -8,6 +8,10 @@ use App\Models\UserServers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
+/**
+ * Get User Data Class.
+ * 获取用户数据类
+ */
 class UserController extends Controller
 {
     private array $_server_name = [];
