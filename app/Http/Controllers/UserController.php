@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Redis;
  */
 class UserController extends Controller
 {
+    /**
+     * User Servers.
+     * 用户可用的服务
+     */
     private array $_server_name = [];
 
     private array $_server_status = [];
