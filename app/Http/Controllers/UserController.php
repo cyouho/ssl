@@ -26,6 +26,10 @@ class UserController extends Controller
      */
     private array $_server_status = [];
 
+    /**
+     * User Servers Errors Messages.
+     * 用户服务错误信息
+     */
     private array $_server_error_messages = [];
 
     private array $_server_success_messages = [];
