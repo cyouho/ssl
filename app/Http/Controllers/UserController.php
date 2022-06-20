@@ -32,6 +32,10 @@ class UserController extends Controller
      */
     private array $_server_error_messages = [];
 
+    /**
+     * User Servers Success Messages.
+     * 用户服务成功信息
+     */
     private array $_server_success_messages = [];
 
     public function __construct()
