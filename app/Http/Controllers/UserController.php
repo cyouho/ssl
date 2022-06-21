@@ -38,6 +38,10 @@ class UserController extends Controller
      */
     private array $_server_success_messages = [];
 
+    /**
+     * Constract Function For Init.
+     * 构造方法
+     */
     public function __construct()
     {
         $this->_server_name = config('userservers.server_name');
