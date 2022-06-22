@@ -71,6 +71,15 @@ class UserController extends Controller
         return response()->json($result, 200);
     }
 
+    /**
+     * Get User Datas.
+     * 获取用户数据
+     * 
+     * @param Request $request <IO datas | 输入数据流>
+     * @param int $userId <user id | 用户Id>
+     * 
+     * @return response mix
+     */
     public function getUserData(Request $request, int $userId)
     {
         $userData = new UserAccount();
