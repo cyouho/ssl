@@ -143,6 +143,15 @@ class UserController extends Controller
         return response()->json($message, $httpStatus);
     }
 
+    /**
+     * Change User Servers Status.
+     * 更改用户服务状态
+     * 
+     * @param Request $request <IO datas | 输入数据>
+     * @param int $userId <user Id | 用户Id>
+     * 
+     * @return json mix <json datas | json数据>
+     */
     public function changeUserServerStatus(Request $request, int $userId)
     {
         $postData = $request->validate([
