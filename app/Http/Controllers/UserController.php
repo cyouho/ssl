@@ -94,6 +94,14 @@ class UserController extends Controller
         return response()->json($result, 200);
     }
 
+    /**
+     * Set User Servers.
+     * 设置用户注册服务
+     * 
+     * @param Request $request <IO datas | 输入数据>
+     * 
+     * @return json mix <json data | json 数据>
+     */
     public function setUserServers(Request $request)
     {
         $postData = $request->validate([
