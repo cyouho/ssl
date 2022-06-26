@@ -226,6 +226,13 @@ class UserController extends Controller
         return response()->json($messages, $httpStatus);
     }
 
+    /**
+     * Change user Name From Redis.
+     * 更改Redis中的用户名
+     * 
+     * @param string $userSession <user session | 用户session>
+     * @param string $userName <user name | 用户名>
+     */
     private function changeUserNameFromRedis($userSession, $userName)
     {
         $redis = Redis::connection('session');
