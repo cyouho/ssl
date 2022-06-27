@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/**
+ * All Controller Utils Functions.
+ * 控制器所有工具类
+ */
 class Utils extends Controller
 {
     /**
