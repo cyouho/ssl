@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Servers;
 
+/**
+ * User Servers Class.
+ * 用户服务类
+ */
 class ServersController extends Controller
 {
     public function getAllServers()
