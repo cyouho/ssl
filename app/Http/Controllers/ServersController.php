@@ -11,6 +11,12 @@ use App\Models\Servers;
  */
 class ServersController extends Controller
 {
+    /**
+     * Get All Servers
+     * 获取所有服务
+     * 
+     * @return response <json data | json数据>
+     */
     public function getAllServers()
     {
         $servers = new Servers();
