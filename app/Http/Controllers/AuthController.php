@@ -104,6 +104,10 @@ class AuthController extends Controller
     /**
      * Login function
      * 用户登录
+     * 
+     * @param Request $request <IO datas | 输入数据>
+     * 
+     * @return response json <json datas | json数据>
      */
     public function login(Request $request)
     {
