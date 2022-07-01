@@ -183,6 +183,10 @@ class AuthController extends Controller
     /**
      * Logout function
      * 用户登出
+     * 
+     * @param Request $request <IO datas | 输入数据>
+     * 
+     * @return response json <json datas | json数据>
      */
     public function logout(Request $request)
     {
