@@ -14,6 +14,10 @@ class Servers extends Model
 {
     use HasFactory;
 
+    /**
+     * DB Table Name.
+     * 数据库表名
+     */
     const TABLE_NAME = 'servers';
 
     public function getAllServers(array $columnName = ['*'], array $condition = [])
