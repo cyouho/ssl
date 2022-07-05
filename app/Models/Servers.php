@@ -20,6 +20,15 @@ class Servers extends Model
      */
     const TABLE_NAME = 'servers';
 
+    /**
+     * Get All Servers.
+     * 获取所有服务
+     * 
+     * @param array $columnName <column name | 查询字段名>
+     * @param array $condition  <where condition | 查询条件>
+     * 
+     * @return mix function <function | 方法>
+     */
     public function getAllServers(array $columnName = ['*'], array $condition = [])
     {
         return $this->selectServersData($columnName, $condition);
