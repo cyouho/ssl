@@ -34,6 +34,15 @@ class Servers extends Model
         return $this->selectServersData($columnName, $condition);
     }
 
+    /**
+     * Select Servers Data.
+     * 检索服务数据
+     * 
+     * @param array $columnName <column name | 查询字段名>
+     * @param array $condition  <where condition | 查询条件>
+     * 
+     * @return object $result <servers datas | 服务数据>
+     */
     private function selectServersData(array $columnName = ['*'], array $condition = [])
     {
         $result = DB::table(self::TABLE_NAME)
