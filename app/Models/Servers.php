@@ -53,6 +53,14 @@ class Servers extends Model
         return $result;
     }
 
+    /**
+     * Insert Servers Datas.
+     * 插入服务数据
+     * 
+     * @param array $insertData <insert data | 需插入的数据>
+     * 
+     * @return int $id <insert id by column | 插入数据后的列号>
+     */
     private function insertServerData(array $insertData = [])
     {
         $id = DB::table(self::TABLE_NAME)
