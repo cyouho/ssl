@@ -63,6 +63,15 @@ class UserAccount extends Model
         return isset($result[0]) ? $result[0]->user_name : '';
     }
 
+    /**
+     * Get User Data For Profile.
+     * 为profile获取用户数据
+     * 
+     * @param array $columnName <DB column name | 数据库列名>
+     * @param array $condition  <DB select where condition | 数据库where约束条件>
+     * 
+     * @return mix function <private function | 返回一个私有方法>
+     */
     public function getUserDataForProfile(array $columnName = ['*'], array $conditions = [])
     {
         return $this->selectUserData($columnName, $conditions);
