@@ -90,6 +90,14 @@ class UserAccount extends Model
         return $this->selectUserData($columnName = ['user_session'], $condition = [['user_email', '=', $email]]);
     }
 
+    /**
+     * Update User Login Times.
+     * 更新用户登录次数
+     * 
+     * @param array $loginTime <login time | 登录次数>
+     * @param array $userEmail <user email | 用户email>
+     * @param string $session  <user session | 用户session>
+     */
     public function updateUserTest($loginTime, $userEmail, $session)
     {
         $this->updateUserData($condition = [['user_email', $userEmail]], $updataData = ['last_login_at' => $loginTime, 'user_session' => $session, 'total_login_times' => DB::raw('total_login_times + 1')]);
