@@ -103,6 +103,15 @@ class UserAccount extends Model
         $this->updateUserData($condition = [['user_email', $userEmail]], $updataData = ['last_login_at' => $loginTime, 'user_session' => $session, 'total_login_times' => DB::raw('total_login_times + 1')]);
     }
 
+    /**
+     * Change User Name.
+     * 更改用户名
+     * 
+     * @param array $condition <where condition | 检索的where约束条件>
+     * @param array $updateData <new user name | 新用户名>
+     * 
+     * @return mix function
+     */
     public function changeUserName(array $condition = [], array $updateData = [])
     {
         return $this->updateUserData($condition, $updateData);
