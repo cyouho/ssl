@@ -139,6 +139,13 @@ class UserAccount extends Model
         return Hash::check($password, $hashPassword);
     }
 
+    /**
+     * Delete User Session.
+     * 删除用户session
+     * 
+     * @param string $userData <user email | 用户email>
+     * @param string $deleteData <>
+     */
     public function deleteUserSession($userData, $deleteData)
     {
         $this->updateUserData($condition = [['user_email', $userData]], $deleteData);
