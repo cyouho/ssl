@@ -10,6 +10,10 @@ class UserLoginRecord extends Model
 {
     use HasFactory;
 
+    /**
+     * Table Name For DB.
+     * 数据库表名
+     */
     const TABLE_NAME = 'user_login_records';
 
     public function setUserLoginRecord(array $columnName = [], array $condition = [])
