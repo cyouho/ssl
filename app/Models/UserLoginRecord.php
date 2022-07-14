@@ -28,6 +28,17 @@ class UserLoginRecord extends Model
         $this->createUserData($columnName, $condition);
     }
 
+    /**
+     * Get User Login Record.
+     * 获取用户登录记录信息
+     * 
+     * @param array $columnName <DB column name | 数据库列名>
+     * @param array $condition <DB where condition | 数据库 where 检索条件>
+     * @param string $orderByColumnName <order by column name | 排序字段名>
+     * @param string $orderBy <order by default value: desc | 默认排序: desc>
+     * 
+     * @return mix function
+     */
     public function getUserLoginRecord(
         array $columnName = [],
         array $condition = [],
