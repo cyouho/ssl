@@ -64,6 +64,17 @@ class UserLoginRecord extends Model
             );
     }
 
+    /**
+     * Select User Data.
+     * 检索用户数据
+     * 
+     * @param array $columnName <DB column name | 数据库列名>
+     * @param array $condition <DB where condition | 数据库 where 检索约束条件>
+     * @param string $orderByColumnName <DB order by column name | 数据库排序字段名>
+     * @param string $orderBy <DB order by default value | 数据库检索排序默认模式>
+     * 
+     * @return object $result <select result | 检索结果>
+     */
     private function selectUserData(
         array $columnName = ['*'],
         array $condition = [],
