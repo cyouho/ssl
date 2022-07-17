@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * User Servers Class.
+ * 用户服务类
+ */
 class UserServers extends Model
 {
     use HasFactory;
