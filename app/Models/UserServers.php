@@ -14,6 +14,10 @@ class UserServers extends Model
 {
     use HasFactory;
 
+    /**
+     * DB Table Name.
+     * 数据库表名
+     */
     const TABLE_NAME = 'user_servers';
 
     public function getUserServers(array $columnName, array $codition): array
