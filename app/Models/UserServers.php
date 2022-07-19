@@ -20,6 +20,15 @@ class UserServers extends Model
      */
     const TABLE_NAME = 'user_servers';
 
+    /**
+     * Get User Servers.
+     * 获取用户服务
+     * 
+     * @param array $columnName <DB column name | 数据库列名>
+     * @param array $condition  <DB condition | 数据库 where 检索约束条件>
+     * 
+     * @return mix function
+     */
     public function getUserServers(array $columnName, array $codition): array
     {
         return $this->selectUserData($columnName, $codition);
