@@ -34,6 +34,14 @@ class UserServers extends Model
         return $this->selectUserData($columnName, $codition);
     }
 
+    /**
+     * Set User Servers.
+     * 设置用户服务
+     * 
+     * @param array $insertData <insert data with user servers | 需插入的用户服务数据>
+     * 
+     * @return mix function
+     */
     public function setUserServers(array $insertData = [])
     {
         return $this->createUserData($insertData);
