@@ -47,6 +47,15 @@ class UserServers extends Model
         return $this->createUserData($insertData);
     }
 
+    /**
+     * Judge If Exist Server for User.
+     * 判断用户是否已经存在服务
+     * 
+     * @param array $columnName <DB column name | 数据库字段名>
+     * @param array $condition  <DB where condition | 数据库 where 检索约束条件>
+     * 
+     * @return boolean
+     */
     public function ifExistServerForTheUser(array $columnName = ['*'], array $condition = []): bool
     {
         $result = $this->selectUserData($columnName, $condition);
