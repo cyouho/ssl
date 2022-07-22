@@ -63,6 +63,15 @@ class UserServers extends Model
         return isset($result[0]);
     }
 
+    /**
+     * Set User Servers Status.
+     * 设置用户服务状态
+     * 
+     * @param array $condition <DB where condition | 数据库 where 检索约束条件>
+     * @param array $updateData <Update for DB | 数据库更新数据>
+     * 
+     * @return mix function
+     */
     public function setUserServersStatus(
         array $condition = [],
         array $updateData = []
