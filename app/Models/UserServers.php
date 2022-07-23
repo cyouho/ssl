@@ -99,6 +99,14 @@ class UserServers extends Model
         return $result;
     }
 
+    /**
+     * Create User Data.
+     * 创建用户数据
+     * 
+     * @param array $insertData <insert data to DB | 插入数据库的数据>
+     * 
+     * @return int $id <get inserted if by inserted | 插入数据后的列Id>
+     */
     private function createUserData(array $insertData = [])
     {
         $id = DB::table(self::TABLE_NAME)
