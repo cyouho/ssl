@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * User Login Record Class.
+ * 用户登录记录类
+ */
 class UserLoginRecord extends Model
 {
     use HasFactory;
